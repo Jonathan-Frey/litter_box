@@ -148,12 +148,111 @@ If you don't want to rely on external services, you may instead host the TIG-sta
 
 ## The Code
 
+The source code is seperated into several files.
+
+`boot.py` executes when the system powers on and connects to the wifi as well as instantiating an instance of the the MQTT client that connects to the MQTT broker. The functionality for this is provided by the `wifiConnection.py` and `mqtt.py` files.
+
+The `main.py` file executes next, and is, as the name hints at, the main file for the application. For each sensor/actuator, a seperate file has been created which contains a class encapsulating the core funtionalities for each sensor/actuator. In order for the main file to be able to read and reset the values getters and setters are created.
+
+```python
+class MotionSensor:
+    def __init__(self, motion_sensor_pin, is_on_getter):
+        self._start_time = utime.ticks_ms()
+        self._motion_sensor = Pin(motion_sensor_pin, Pin.IN, Pin.PULL_UP)
+        self._motion_sensor.irq(trigger=Pin.IRQ_RISING, handler=self._motion_sensor_handler)
+        self.set_movement_detected(0)
+        self._is_on_getter = is_on_getter
+
+    # Define callback functions for each interrupt
+    def _motion_sensor_handler(self, pin):
+        if self.get_movement_detected() == 1:
+            return
+
+        now = utime.ticks_ms()
+
+        if self._is_on_getter() and utime.ticks_diff(now, self._start_time) > 60000:
+            self.set_movement_detected(1)
+
+    def get_movement_detected(self):
+        return self._movement_detected
+
+    def set_movement_detected(self, value):
+        if value == 0:
+            self._movement_detected = 0
+        elif value == 1:
+            self._movement_detected = 1
+```
+
+As you may have noticed i only have handlers for the rising IRQ, meaning once a rise in voltage is detected (1), the state will be saved and never go back to 0, even when no motion is detected. This is intentional and will be made apparent later. You may also notice that the measurement will only be saved if the global `_is_on` state is 1, meaning I can pause measurements while for example cleaning the litter box.
+
+Now back to the main file. It starts by defining its global state and a callback function used by the other objects to modify this state, as well as a getter. It then simply instantiates objects for each of the sensors/actuators with the corresponding pins on the microcontroller.
+
+```python
+_is_on = 1
+
+def switch_on_state():
+    global _is_on
+    if _is_on == 0:
+        _is_on = 1
+        rg_led.green()
+    else:
+        _is_on = 0
+        rg_led.red()
+
+def get_is_on():
+    return _is_on
+
+rg_led = Led(13, 14)
+rg_led.green()
+button = Button(16, switch_on_state)
+motion_sensor = MotionSensor(15, get_is_on)
+reed_switch = ReedSwitch(17, get_is_on)
+```
+
+The final piece of the puzzle is setting up a callback function for sending the data to the MQTT broker and creating a timer that will execute the callback function every 10 seconds. For this, the MQTT client instantiated in the `boot.py` file is used. At the end of the callback funtion, the state of the measurements for the movement and reed sensors will be set back to 0. this combined with the IRQ handles discussed earlier means as long as movement or an activation of the reed switch has been registered in the last 10 seconds, the client will transmit this state, even if there currently is no activation.
+
+A simple cleanup function is also added. While not necessary since it is only activated when stopping the script, which is only done when disconnecting the power in this case, it helped prevent bugs when developing the application. This is beacause the Pymakr developer mode with its hot reload does not deinit the timer or close the connections, meaning Sometimes multiple timers would be active at once, sending the data at irregular times.
+
+```python
+# Callback function to be called by the timer
+def timer_callback(t):
+    data = {
+        "system_state" : get_is_on(),
+        "movement" : motion_sensor.get_movement_detected(),
+        "door_closed" : reed_switch.get_reed_switch_active()
+    }
+    print(ujson.dumps(data))
+
+    client.publish(topic=keys.TOPIC, msg=ujson.dumps(data))
+
+    # Reset measurements for the next interval
+    motion_sensor.set_movement_detected(0)
+    reed_switch.set_reed_switch_active(0)
+
+def cleanup():
+    timer.deinit()
+    client.disconnect()
+    wifiConnection.disconnect()
+    print("Disconnected from MQTT broker.")
+
+try:
+    # Initialize a Timer object
+    timer = Timer()
+
+    # Configure the timer to call timer_callback every 10 seconds
+    timer.init(period=10000, mode=Timer.PERIODIC, callback=timer_callback)
+    while True:
+        utime.sleep(1)
+finally:
+    cleanup()
+```
+
 ## Transmitting The Data / Connectivity
 
 **Overview:**
 The Pico W is connected to WiFi for internet access.
 
-In this setup, data from the Pico W is transmitted every 10 seconds to the test.mosquitto.org MQTT broker using JSON format. Telegraf subscribes to specific topics from the broker and saves the data to the influxDB database.
+In this setup, data from the Pico W is transmitted every 10 seconds to the test.mosquitto.org MQTT broker using the JSON format. Telegraf subscribes to specific topics from the broker and saves the data to the influxDB database.
 
 **Wireless Protocol:**
 
