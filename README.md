@@ -293,3 +293,29 @@ Below is a snapshot of the dashboard with the three main panels. They show the s
 I chose not to extrapolate the number of times cats have visited the litter box from the movement data at this stage since I can not be sure if seperate movement readings are from seperate visits or the same visit. But by analyzing the data I will receive across multiple weeks, I will look at the patterns and figure out a ruleset for determening this.
 
 ## Finalizing The Design
+
+### Results
+
+The Litter Box Monitor project successfully achieved its primary objectives of tracking the litter box usage and monitoring the bathroom door status. Using a Raspberry Pi Pico WH, sensors, and the TIG stack for data collection and visualization, the system was able to transmit sensor data to an MQTT broker and display it on Grafana dashboards. Key achievements include:
+
+1. \***\*Data Transmission:** Sensor data was consistently transmitted every 10 seconds to the public MQTT broker and subsequently stored in the InfluxDB database. This data was then visualized in Grafana, allowing for real-time monitoring of the litter box and door status.
+
+2. **System Functionality:** The system effectively recorded and displayed whether the litter box was in use and whether the bathroom door was open or closed. This helps in monitoring the defecation and urination habits of the cats and ensures that the bathroom door is not left closed for too long.
+
+3. **Wi-Fi Connectivity:** The Raspberry Pi Pico WH maintained a stable Wi-Fi connection, ensuring reliable data transmission to the MQTT broker and subsequently to the TIG stack hosted on DigitalOcean.
+
+4. **Visualization:** The Grafana dashboard provided clear and insightful visualizations of the sensor data, facilitating easy monitoring and analysis.
+
+### Reflection
+
+The project was a valuable learning experience in integrating hardware and software components for IoT applications. Several insights and areas for improvement were identified:
+
+1. **Sensor Selection:** While the motion sensor (HC-SR501 PIR) detected general movement in the litter box, it lacked the precision to differentiate between individual cats. Implementing load sensors would offer more exact results and the ability to distinguish between different cats based on weight. Additionally, an attempt to use a vibration sensor to register scratching in the litter box proved unsuccessful due to its low sensitivity.
+
+2. **Public vs. Private MQTT Broker:** The use of a public MQTT broker was necessitated due to connectivity issues with the university-provided broker. While the public broker served its purpose, a private broker would offer better security and reliability. Future iterations should aim to resolve the connectivity issues with the university's broker or set up a dedicated private broker.
+
+3. **Data Analysis:** The current setup effectively monitors the litter box usage but does not extrapolate the number of visits. By analyzing the collected data over an extended period, patterns can be identified, and rules can be developed to determine distinct visits. This will enhance the system's ability to provide more detailed insights into the cats' habits.
+
+4. **System Robustness:** The cleanup function helped prevent bugs during development by ensuring that multiple timers were not active simultaneously. This highlights the importance of robust error handling and resource management in IoT projects to ensure reliable operation.
+
+Overall, the project successfully met its goals and provided a solid foundation for further enhancements. Future improvements will focus on sensor accuracy, secure data transmission, and advanced data analysis to provide deeper insights into the cats' health and habits.
