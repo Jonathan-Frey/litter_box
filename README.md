@@ -4,6 +4,25 @@ Name: **Jonathan Frey**
 
 Student Id: **jf223rf**
 
+## Table of content
+
+- [Table of content](#table-of-content)
+- [Overview](#overview)
+- [Objective](#objective)
+- [Material](#material)
+- [Computer setup](#computer-setup)
+  - [Flashing the Firmware](#flashing-the-firmware)
+  - [Installing VSCode and Pymakr Plugin)](#installing-vscode-and-pymakr-plugin)
+  - [Install Required Software](#install-required-software)
+- [Putting everything together](#putting-everything-together)
+- [Platform](#platform)
+- [The Code](#the-code)
+- [Transmitting the data / connectivity](#transmitting-the-data--connectivity)
+- [Presenting the data](#presenting-the-data)
+- [Finalizing the design](#finalizing-the-design)
+  - [Results](#results)
+  - [Reflection](#reflection)
+
 ## Overview
 
 In this project we will create a monitor for tracking movement in a litter box as well as the open or closed state of a nearby door(E.g. bathroom door). By doing this we can see the defecation and urination habits of the cat/cats and minimize the risk of the bathroom door being closed for too long, which may result in unneccessary stress in the cat and urination in unwanted locations.
@@ -34,7 +53,7 @@ The Pico WH comes with pins pre-soldered onto the board. A Pico W can be used in
 
 ## Computer Setup
 
-**Step 1: Flashing the Firmware**
+### Flashing the Firmware
 
 1. **Download the MicroPython firmware:**
 
@@ -52,7 +71,7 @@ The Pico WH comes with pins pre-soldered onto the board. A Pico W can be used in
 
    - Drag and drop the downloaded UF2 file onto the Pico W's mass storage device. The device will reboot automatically and appear as a USB serial device.
 
-**Step 2: Installing VSCode and Pymakr Plugin**
+### Installing VSCode and Pymakr Plugin
 
 1. **Install Visual Studio Code (VSCode):**
 
@@ -78,7 +97,7 @@ The Pico WH comes with pins pre-soldered onto the board. A Pico W can be used in
 
    - Here you can both change the name of the device and configure Pymakr to automatically connect to the device when connected to the computer.
 
-**Step 3: Install Required Software**
+### Install Required Software
 
 **1. Install Node.js:**
 
@@ -109,6 +128,20 @@ The Pico WH comes with pins pre-soldered onto the board. A Pico W can be used in
 - You may also start development mode, automatically uploading changed files to the device and restarting it.
 
 ## Putting Everything Together
+
+Below is the schematic for the wiring of all the sensors and actuators. In a product environment, a breadboard should not be used and the wiring should be soldered directly to the microcontroller.
+
+![Fritzing Schematic](assets/images/schematic.png)
+
+There are two rails connected to power from the microcontroller. The north one is powered by 3V3 (pin 36), and the sout one is powered by VBUS (Pin 40, 5v). 3V3 is used to power the reed switch and the push button. VBUS is used to power the PIR-sensor. The LED channels are powered by their respective GPIO pins.
+
+- **LED:** Green channel connected on GPIO 13. Red channel connected son GPIO 14. Powered by their respective GPIO pins.
+
+- **PIR-sensor:** Input signal connected on GPIO 15.
+
+- **Push Button:** Output signal connected on GPIO 16.
+
+- **Reed Switch:** Input signal connected on GPIO 17. Magnet mounted on bathroom door.
 
 ## Platform
 
@@ -298,7 +331,7 @@ I chose not to extrapolate the number of times cats have visited the litter box 
 
 The Litter Box Monitor project successfully achieved its primary objectives of tracking the litter box usage and monitoring the bathroom door status. Using a Raspberry Pi Pico WH, sensors, and the TIG stack for data collection and visualization, the system was able to transmit sensor data to an MQTT broker and display it on Grafana dashboards. Key achievements include:
 
-1. \***\*Data Transmission:** Sensor data was consistently transmitted every 10 seconds to the public MQTT broker and subsequently stored in the InfluxDB database. This data was then visualized in Grafana, allowing for real-time monitoring of the litter box and door status.
+1. **Data Transmission:** Sensor data was consistently transmitted every 10 seconds to the public MQTT broker and subsequently stored in the InfluxDB database. This data was then visualized in Grafana, allowing for real-time monitoring of the litter box and door status.
 
 2. **System Functionality:** The system effectively recorded and displayed whether the litter box was in use and whether the bathroom door was open or closed. This helps in monitoring the defecation and urination habits of the cats and ensures that the bathroom door is not left closed for too long.
 
