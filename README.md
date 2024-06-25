@@ -355,7 +355,7 @@ Below is the finished prototype of the device. Due to not having a soldering iro
 
 The project was a valuable learning experience in integrating hardware and software components for IoT applications. Several insights and areas for improvement were identified:
 
-1. **Sensor Selection:** While the motion sensor (HC-SR501 PIR) detected general movement in the litter box, it lacked the precision to differentiate between individual cats. Implementing load sensors would offer more exact results and the ability to distinguish between different cats based on weight. Additionally, an attempt to use a vibration sensor to register scratching in the litter box proved unsuccessful due to its low sensitivity.
+1. **Sensor Selection:** While the motion sensor (HC-SR501 PIR) detected general movement in the litter box, it lacked the precision to differentiate between individual cats. Implementing load cells would offer more exact results and the ability to distinguish between different cats based on weight. Additionally, an attempt to use a vibration sensor to register scratching in the litter box proved unsuccessful due to its low sensitivity.
 
 2. **Public vs. Private MQTT Broker:** The use of a public MQTT broker was necessitated due to connectivity issues with the university-provided broker. While the public broker served its purpose, a private broker would offer better security and reliability. Future iterations should aim to resolve the connectivity issues with the university's broker or set up a dedicated private broker.
 
