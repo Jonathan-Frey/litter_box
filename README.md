@@ -131,7 +131,7 @@ The Pico WH comes with pins pre-soldered onto the board. A Pico W can be used in
 
 Below is the schematic for the wiring of all the sensors and actuators. In a product environment, a breadboard should not be used and the wiring should be soldered directly to the microcontroller.
 
-![Fritzing Schematic](assets/images/schematic.png)
+![Fritzing Schematic](assets/images/schematics.png)
 
 There are two rails connected to power from the microcontroller. The north one is powered by 3V3 (pin 36), and the sout one is powered by VBUS (Pin 40, 5v). 3V3 is used to power the reed switch and the push button. VBUS is used to power the PIR-sensor. The LED channels are powered by their respective GPIO pins.
 
