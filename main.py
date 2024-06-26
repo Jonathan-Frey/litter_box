@@ -36,7 +36,6 @@ def timer_callback(t):
         "movement" : motion_sensor.get_movement_detected(),
         "door_closed" : reed_switch.get_reed_switch_active()
     }
-    print(ujson.dumps(data))
 
     client.publish(topic=keys.TOPIC, msg=ujson.dumps(data))
 
