@@ -339,17 +339,15 @@ The Litter Box Monitor project successfully achieved its primary objectives of t
 
 4. **Visualization:** The Grafana dashboard provided clear and insightful visualizations of the sensor data, facilitating easy monitoring and analysis.
 
-Below is the finished prototype of the device. Due to not having a soldering iron or a 3d-printer, the whole breadbord was placed inside a cardboard box, with holes cut out for the PIR-sensor, micro-usb cable and LED. No mounting was done to the litter box or bathroom door since I did not vand to permanently damage any of those. For mounting the device to a litter box, a cut would be made in the side of the box or the lid for the PIR-sensor and the device placed to cover that hole. THe reed switch would be mounted to the door frame, with a magnet attached to the door so that they make contact when the door is closed.
+Below is the finished prototype of the device. Due to not having a soldering iron or a 3d-printer, the whole breadbord was placed inside a cardboard box, with holes cut out for the PIR-sensor, micro-usb cable and LED. For mounting the device to a litter box, a cut would be made in the side of the box or the lid for the PIR-sensor and the device placed to cover that hole. The reed switch would be mounted to the door frame, with a magnet attached to the door so that they make contact when the door is closed.s
 
-![Full View](assets/images/IMG_1607.jpg)
+![Door State  monitor](assets/images/IMG_1616.jpg)
 
-![Motion Sensor](assets/images/IMG_1608.jpg)
+![Mounted On Litter Box](assets/images/IMG_1618.jpg)s
 
-![Button](assets/images/IMG_1609.jpg)
+![Motion Sensor](assets/images/IMG_1620.jpg)
 
-![Side View](assets/images/IMG_1610.jpg)
-
-![Magnet And Reed Switch](assets/images/IMG_1611.jpg)
+![LED and Button](assets/images/IMG_1621.jpg)
 
 ### Reflection
 

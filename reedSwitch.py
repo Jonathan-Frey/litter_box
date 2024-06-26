@@ -9,6 +9,7 @@ class ReedSwitch:
     
     # Define callback functions for each interrupt
     def _reed_switch_handler(self, pin):
+        print("detected")
         if self._is_on_getter() and self.get_reed_switch_active() != 1:
             self.set_reed_switch_active(1)
     
