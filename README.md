@@ -35,17 +35,17 @@ In late 2023, one of my cats suffered from urinary obstruction due to bladder st
 
 ## Material
 
-| **Item**                                                                                     | **Description**                                                                            |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| 1x Raspberry Pi Pico WH ![Raspberry Pi Pico WH](/assets/images/pico.jpg)                     | Microcontroller for interfacing with sensors, running logic and communication over network |
-| 1x HC-SR501 PIR Motion Sensor ![HC-SR501 PIR Motion Sensor](/assets/images/hc-sr501.jpg)     | Digital motion sensor for detecting movement in litter box                                 |
-| 1x KY-021 Reed Switch Module Mini ![KY-021 Reed Switch Module Mini](/assets/images/reed.jpg) | digital sensor for detecting nearby magnetic fields                                        |
-| 1x Neodynium Magnet                                                                          | For triggering reed sensor                                                                 |
-| 1x KY-004 Push Button ![KY-004 Push Button](/assets/images/button.png)                       | For disabling sensor readings when cleaning litter box                                     |
-| 1x KY-011 R/G LED module (5mm) ![KY-011 R/G LED module (5mm)](/assets/images/led.jpg)        | For displaying if sensor readings are disabled or not                                      |
-| 2x 330ohm Resistor                                                                           | for limiting the voltage to LED channels                                                   |
-| Male-to-female and Male-to-male Wires                                                        | For connecting sensors and actuators to the microcontroller                                |
-| micro-USB cable                                                                              | For providing power to the microcontroller                                                 |
+| **Item**                                                                                     | **Description**                                                                            | Procurement                                                                           |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -                                                                                     |
+| 1x Raspberry Pi Pico WH ![Raspberry Pi Pico WH](/assets/images/pico.jpg)                     | Microcontroller for interfacing with sensors, running logic and communication over network | 109 SEK [Electrokit](https://www.electrokit.com/raspberry-pi-pico-wh)                 |
+| 1x HC-SR501 PIR Motion Sensor ![HC-SR501 PIR Motion Sensor](/assets/images/hc-sr501.jpg)     | Digital motion sensor for detecting movement in litter box                                 | 55 SEK [Electrokit](https://www.electrokit.com/pir-rorelsedetektor-hc-sr501)          |
+| 1x KY-021 Reed Switch Module Mini ![KY-021 Reed Switch Module Mini](/assets/images/reed.jpg) | digital sensor for detecting nearby magnetic fields                                        | 25 SEK [Electrokit](https://www.electrokit.com/magnetkontaktmodul-mini)               |
+| 1x Neodynium Magnet                                                                          | For triggering reed sensor                                                                 | 11 SEK [Electrokit](https://www.electrokit.com/magnet-neo35-5mm-x-5mm)                |
+| 1x KY-004 Push Button ![KY-004 Push Button](/assets/images/button.png)                       | For disabling sensor readings when cleaning litter box                                     | 19 SEK [ElectroKit](https://www.electrokit.com/tryckknapp-momentan)                   |
+| 1x KY-011 R/G LED module (5mm) ![KY-011 R/G LED module (5mm)](/assets/images/led.jpg)        | For displaying if sensor readings are disabled or not                                      | 19 SEK [Electrokit](https://www.electrokit.com/led-modul-rod/gron-5mm)                |
+| 2x 330ohm Resistor                                                                           | for limiting the voltage to LED channels                                                   | 2 SEK [Electrkit](https://www.electrokit.com/motstand-kolfilm-0.25w-330ohm-330r)      |
+| Male-to-female and Male-to-male Wires                                                        | For connecting sensors and actuators to the microcontroller                                | 29 SEK [Electrkit](https://www.electrokit.com/labsladd-1-pin-hane-hona-150mm-10-pack) |
+| micro-USB cable                                                                              | For providing power to the microcontroller                                                 | 29 SEK [Electrokit](https://www.electrokit.com/micro-usb-till-usb-hona-adapter)       |
 
 In this tutorial these componentswill be used with the microcontroller mounted to a breadboard, but to move on from the prototyping stage, soldering wires directly to the components and putting them in casings is recommended.
 
@@ -89,11 +89,11 @@ The Pico WH comes with pins pre-soldered onto the board. A Pico W can be used in
 
    - Click on the Pymakr icon on the VSCode status bar. At the bottom a list of identified devices can be seen.
 
-   - Connect your Pico W to your computer while watching the list of devices. A new device will apear in the list. That is the Pico W.
+   - Connect your Pico W to your computer while watching the list of devices. A new device will appear in the list. That is the Pico W.
 
    - Hover over the device and press "connect device".
 
-   - To find it easierr in the future you can right-click the device and press "configure device"
+   - To find it easier in the future you can right-click the device and press "configure device"
 
    - Here you can both change the name of the device and configure Pymakr to automatically connect to the device when connected to the computer.
 
@@ -181,11 +181,11 @@ If you don't want to rely on external services, you may instead host the TIG-sta
 
 ## The Code
 
-The source code is seperated into several files.
+The source code is separated into several files.
 
 `boot.py` executes when the system powers on and connects to the wifi as well as instantiating an instance of the the MQTT client that connects to the MQTT broker. The functionality for this is provided by the `wifiConnection.py` and `mqtt.py` files.
 
-The `main.py` file executes next, and is, as the name hints at, the main file for the application. For each sensor/actuator, a seperate file has been created which contains a class encapsulating the core funtionalities for each sensor/actuator. In order for the main file to be able to read and reset the values getters and setters are created.
+The `main.py` file executes next, and is, as the name hints at, the main file for the application. For each sensor/actuator, a separate file has been created which contains a class encapsulating the core funtionalities for each sensor/actuator. In order for the main file to be able to read and reset the values getters and setters are created.
 
 ```python
 class MotionSensor:
@@ -323,7 +323,7 @@ Below is a snapshot of the dashboard with the three main panels. They show the s
 
 ![Grafana Dashboard](assets/images/dashboard.png)
 
-I chose not to extrapolate the number of times cats have visited the litter box from the movement data at this stage since I can not be sure if seperate movement readings are from seperate visits or the same visit. But by analyzing the data I will receive across multiple weeks, I will look at the patterns and figure out a ruleset for determening this.
+I chose not to extrapolate the number of times cats have visited the litter box from the movement data at this stage since I can not be sure if separate movement readings are from separate visits or the same visit. But by analyzing the data I will receive across multiple weeks, I will look at the patterns and figure out a ruleset for determening this.
 
 ## Finalizing The Design
 
